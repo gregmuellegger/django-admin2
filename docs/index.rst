@@ -61,7 +61,6 @@ Content
    reference
    tutorial
 
-
 Indices and tables
 ==================
 
