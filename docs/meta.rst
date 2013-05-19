@@ -159,7 +159,9 @@ Attributes
     evaluates to ``True``) or if the model was created by the users code.
 
 ``auto_field``
-    TODO ...
+    Will be an instance of ``django.db.models.fields.AutoField`` if one is
+    used for this model. Django creates this field automatically if no
+    user assigned field has the ``primary_key`` set to ``True``.
 
 ``concrete_managers``
     TODO ...
@@ -168,7 +170,8 @@ Attributes
     TODO ...
 
 ``has_auto_field``
-    TODO ...
+    A boolean value, set to ``True`` if an ``AutoField`` is used in this
+    model. Otherwise it will be ``False``.
 
 ``local_fields``
     TODO ...
