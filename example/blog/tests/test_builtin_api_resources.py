@@ -1,3 +1,9 @@
+'''
+This file contains integration tests for the resources that django-admin2
+ships with, that handle third-party models.
+
+Examples are User and Group models of django.contrib.auth.
+'''
 from django.contrib.auth.models import Group, User
 from django.core.urlresolvers import reverse
 from django.test import TestCase
