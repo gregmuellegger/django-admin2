@@ -150,7 +150,13 @@ Attributes
         TODO: Create a django ticket to suggest removing it.
 
 ``auto_created``
-    TODO ...
+    In most cases this value is ``False``. Only for models that are
+    automatically created as intermediate models for a many to many
+    field, this will be set. In that case ``auto_created`` will be the model
+    that originally triggered the creation of this intermediary ``through``
+    model. So in any case you use ``auto_created`` in a boolean expression to
+    check if this model was automatically created by the django ORM (then it
+    evaluates to ``True``) or if the model was created by the users code.
 
 ``auto_field``
     TODO ...
