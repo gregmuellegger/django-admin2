@@ -167,11 +167,17 @@ Attributes
     TODO ...
 
 ``concrete_model``
-    TODO ...
+    For any non-abstract class, the ``concrete_model`` is the model in the end
+    of the ``proxy_for_model`` chain. In particular, for concrete models, the
+    ``concrete_model`` is always the class itself.
 
 ``has_auto_field``
     A boolean value, set to ``True`` if an ``AutoField`` is used in this
     model. Otherwise it will be ``False``.
+
+``installed``
+    Is ``True`` if the app in which this model was defined is listed in the
+    :setting:`INSTALLED_APPS` setting. ``False`` otherwise.
 
 ``local_fields``
     TODO ...
@@ -184,7 +190,7 @@ Attributes
     is attached to.
 
 ``model_name``
-    TODO ...
+    Same as ``object_name`` but in lower case.
 
 ``object_name``
     It is the actual name of the model class.
@@ -193,7 +199,7 @@ Attributes
     TODO ...
 
 ``pk``
-    TODO ...
+    The primary key field of the model.
 
 ``proxy_for_model``
     For any class that is a proxy (including automatically created
@@ -210,13 +216,13 @@ Attributes
     TODO ...
 
 ``virtual_fields``
-    TODO ...
+    Will contain fields that are not really db related. The only examples for
+    fields that can end up in ``virtual_fields`` in the django codebase are
+    :class:`~django.contrib.contenttypes.generic.GenericForeignKey` and
+    :class:`~django.contrib.contenttypes.generic.GenericRelation`.
 
 Methods
 =======
-
-``module_name(self)``
-    TODO ...
 
 ``add_field(self, field)``
     TODO ...
