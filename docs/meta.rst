@@ -48,7 +48,7 @@ Attributes copied from ``Meta``
 
 Some of ``_meta``'s attributes are just copied from the ``Meta`` options. The
 following attributes are those. Their behaviour is more detailed described in
-the :doc:`django documentation <django:/ref/models/options>`.
+the :ref:`django documentation <django:meta-options>`.
 
 ``abstract``
     A boolean value.
