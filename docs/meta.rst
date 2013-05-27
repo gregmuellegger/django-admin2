@@ -44,19 +44,27 @@ Like here::
 Attributes copied from ``Meta``
 ===============================
 
-.. the django intersphinx link doesn't work :-(
+.. currentmodule:: django.db.models
 
 Some of ``_meta``'s attributes are just copied from the ``Meta`` options. The
 following attributes are those. Their behaviour is more detailed described in
 the :ref:`django documentation <django:meta-options>`.
 
 ``abstract``
+------------
+
+.. attribute:: Options.abstract
+
     A boolean value.
 
     See the django documentation on :attr:`~django.db.models.Options.abstract`
     for more information.
 
 ``app_label``
+-------------
+
+.. attribute:: Options.app_label
+
     By default it is the name of the app module that the model was created in.
     This can be overriden in ``Meta`` to make a model part of a specific
     app.
@@ -65,6 +73,10 @@ the :ref:`django documentation <django:meta-options>`.
     :attr:`~django.db.models.Options.app_label`.
 
 ``db_table``
+------------
+
+.. attribute:: Options.db_table
+
     Contains the name of the database table used for this model. This is
     either what was set on ``Meta`` or defaults to a string that is built
     from ``app_label`` and ``model_name`` seperated by an underscore. So for
@@ -75,10 +87,18 @@ the :ref:`django documentation <django:meta-options>`.
     :attr:`~django.db.models.Options.db_table`.
 
 ``db_tablespace``
+-----------------
+
+.. attribute:: Options.db_tablespace
+
     See the django documentation on
     :attr:`~django.db.models.Options.db_tablespace` for more information.
 
 ``get_latest_by``
+-----------------
+
+.. attribute:: Options.get_latest_by
+
     The name of the field that should be used during ordering to make
     :meth:`~django.db.models.query.QuerySet.latest` and
     :meth:`~django.db.models.query.QuerySet.earliest` work.
@@ -87,24 +107,44 @@ the :ref:`django documentation <django:meta-options>`.
     :attr:`~django.db.models.Options.get_latest_by`.
 
 ``managed``
+-----------
+
+.. attribute:: Options.managed
+
     If ``managed`` is ``True`` then the :djadmin:`syncdb` management command will take care of creating the database tables. Defaults to ``True``.
 
     Also see the django documentation about
     :attr:`~django.db.models.Options.managed`.
 
 ``order_with_respect_to``
+-------------------------
+
+.. attribute:: Options.order_with_respect_to
+
     See the django documentation on
     :attr:`~django.db.models.Options.order_with_respect_to` for more information.
 
 ``ordering``
+------------
+
+.. attribute:: Options.ordering
+
     See the django documentation on
     :attr:`~django.db.models.Options.ordering` for more information.
 
 ``permissions``
+---------------
+
+.. attribute:: Options.permissions
+
     See the django documentation on
     :attr:`~django.db.models.Options.permissions` for more information.
 
 ``proxy``
+---------
+
+.. attribute:: Options.proxy
+
     If set to ``True`` then this model will be treated a :ref:`proxy model
     <proxy-models>`.
 
@@ -112,14 +152,26 @@ the :ref:`django documentation <django:meta-options>`.
     :attr:`~django.db.models.Options.proxy`.
 
 ``index_together``
+------------------
+
+.. attribute:: Options.index_together
+
     See the django documentation on
     :attr:`~django.db.models.Options.index_together` for more information.
 
 ``unique_together``
+-------------------
+
+.. attribute:: Options.unique_together
+
     See the django documentation on
     :attr:`~django.db.models.Options.unique_together` for more information.
 
 ``verbose_name``
+----------------
+
+.. attribute:: Options.verbose_name
+
     A human-readable name of the models name, singular. If this is not set in
     ``Meta``, django will try to guess a human readable name by using the
     ``object_name`` and inserting appropriate spaces for the CamelCased model
@@ -129,6 +181,10 @@ the :ref:`django documentation <django:meta-options>`.
     :attr:`~django.db.models.Options.verbose_name` for more information.
 
 ``verbose_name_plural``
+-----------------------
+
+.. attribute:: Options.verbose_name_plural
+
     A human-readable name of the models name, plural. If this is not set in
     ``Meta``, it will default to ``verbose_name`` + ``"s"``.
 
@@ -139,6 +195,10 @@ Attributes
 ==========
 
 ``abstract_managers``
+---------------------
+
+.. attribute:: Options.abstract_managers
+
     To handle various inheritance situations, we need to track where
     managers came from (concrete or abstract base classes).
 
@@ -150,6 +210,10 @@ Attributes
         TODO: Create a django ticket to suggest removing it.
 
 ``auto_created``
+----------------
+
+.. attribute:: Options.auto_created
+
     In most cases this value is ``False``. Only for models that are
     automatically created as intermediate models for a many to many
     field, this will be set. In that case ``auto_created`` will be the model
@@ -159,49 +223,101 @@ Attributes
     evaluates to ``True``) or if the model was created by the users code.
 
 ``auto_field``
+--------------
+
+.. attribute:: Options.auto_field
+
     Will be an instance of ``django.db.models.fields.AutoField`` if one is
     used for this model. Django creates this field automatically if no
     user assigned field has the ``primary_key`` set to ``True``.
 
 ``concrete_managers``
+---------------------
+
+.. attribute:: Options.concrete_managers
+
     TODO ...
 
 ``concrete_model``
+------------------
+
+.. attribute:: Options.concrete_model
+
     For any non-abstract class, the ``concrete_model`` is the model in the end
     of the ``proxy_for_model`` chain. In particular, for concrete models, the
     ``concrete_model`` is always the class itself.
 
 ``has_auto_field``
+------------------
+
+.. attribute:: Options.has_auto_field
+
     A boolean value, set to ``True`` if an ``AutoField`` is used in this
     model. Otherwise it will be ``False``.
 
 ``installed``
+-------------
+
+.. attribute:: Options.installed
+
     Is ``True`` if the app in which this model was defined is listed in the
     :setting:`INSTALLED_APPS` setting. ``False`` otherwise.
 
 ``local_fields``
+----------------
+
+.. attribute:: Options.local_fields
+
     TODO ...
 
 ``local_many_to_many``
+----------------------
+
+.. attribute:: Options.local_many_to_many
+
     TODO ...
 
 ``model``
+---------
+
+.. attribute:: Options.model
+
     This is the actual ``django.db.models.Model`` that the ``_meta`` attribute
     is attached to.
 
 ``model_name``
+--------------
+
+.. attribute:: Options.model_name
+
     Same as ``object_name`` but in lower case.
 
 ``object_name``
+---------------
+
+.. attribute:: Options.object_name
+
     It is the actual name of the model class.
 
 ``parents``
+-----------
+
+.. attribute:: Options.parents
+
     TODO ...
 
 ``pk``
+------
+
+.. attribute:: Options.pk
+
     The primary key field of the model.
 
 ``proxy_for_model``
+-------------------
+
+.. attribute:: Options.proxy_for_model
+
     For any class that is a proxy (including automatically created
     classes for deferred object loading), ``proxy_for_model`` tells us
     which class this model is proxying. Note that ``proxy_for_model``
@@ -209,13 +325,25 @@ Attributes
     variable is always ``None``.
 
 ``related_fkey_lookups``
+------------------------
+
+.. attribute:: Options.related_fkey_lookups
+
     List of all lookups defined in ForeignKey 'limit_choices_to' options
     from *other* models. Needed for some admin checks. Internal use only.
 
 ``swappable``
+-------------
+
+.. attribute:: Options.swappable
+
     TODO ...
 
 ``virtual_fields``
+------------------
+
+.. attribute:: Options.virtual_fields
+
     Will contain fields that are not really db related. The only examples for
     fields that can end up in ``virtual_fields`` in the django codebase are
     :class:`~django.contrib.contenttypes.generic.GenericForeignKey` and
