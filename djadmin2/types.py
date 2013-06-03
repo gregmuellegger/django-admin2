@@ -81,8 +81,12 @@ class ModelAdmin2(object):
     api_serializer_class = None
 
     # API Views
-    api_list_view = apiviews.ListCreateAPIView
-    api_detail_view = apiviews.RetrieveUpdateDestroyAPIView
+    api = {
+        '1': {
+            'list_view': apiviews.ListCreateAPIView,
+            'detail_view': apiviews.RetrieveUpdateDestroyAPIView,
+        },
+    }
 
     def __init__(self, model, admin, name=None, **kwargs):
         self.name = name
@@ -189,27 +193,43 @@ class ModelAdmin2(object):
         )
 
     def get_api_urls(self):
-        return patterns('',
+        api_urls = []
+        api_config = sorted(self.api.items(), key=lambda api: api[0])
+        api_config = list(reversed(api_config))
+
+        for version, views in api_config:
+            api_urls.extend((
+                url(
+                    regex=r'^api/v{}/$'.format(version),
+                    view=views['list_view'].as_view(**self.get_api_list_kwargs()),
+                    name=self.get_prefixed_view_name('api_v{}_list'.format(version))),
+                url(
+                    regex=r'^api/v{}/(?P<pk>[0-9]+)/$'.format(version),
+                    view=views['detail_view'].as_view(**self.get_api_detail_kwargs()),
+                    name=self.get_prefixed_view_name('api_v{}_detail'.format(version))),
+            ))
+
+        # get the most recent version and define it again so that we can have
+        # a reference to the views with a generic url name that does not
+        # include the api version number
+        version, views = list(api_config)[0]
+        api_urls.extend((
             url(
-                regex=r'^$',
-                view=self.api_list_view.as_view(**self.get_api_list_kwargs()),
-                name=self.get_prefixed_view_name('api_list'),
-            ),
+                regex=r'^api/v{}/'.format(version),
+                view=views['list_view'].as_view(**self.get_api_list_kwargs()),
+                name=self.get_prefixed_view_name('api_list'.format(version))),
             url(
-                regex=r'^(?P<pk>[0-9]+)/$',
-                view=self.api_detail_view.as_view(**self.get_api_detail_kwargs()),
-                name=self.get_prefixed_view_name('api_detail'),
-            ),
-        )
+                regex=r'^api/v{}/(?P<pk>[0-9]+)/$'.format(version),
+                view=views['detail_view'].as_view(**self.get_api_detail_kwargs()),
+                name=self.get_prefixed_view_name('api_detail'.format(version))),
+        ))
+
+        return patterns('', *api_urls)
 
     @property
     def urls(self):
         # We set the application and instance namespace here
-        return self.get_urls(), None, None
-
-    @property
-    def api_urls(self):
-        return self.get_api_urls(), None, None
+        return self.get_urls() + self.get_api_urls(), None, None
 
     def get_list_actions(self):
         actions_dict = {}

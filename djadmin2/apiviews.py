@@ -1,4 +1,4 @@
-from django.utils.encoding import force_str
+from django.utils.encoding import force_text
 
 from rest_framework import fields, generics, serializers
 from rest_framework.response import Response
@@ -7,8 +7,6 @@ from rest_framework.views import APIView
 
 from . import utils
 from .viewmixins import Admin2Mixin
-
-API_VERSION = '0.1'
 
 
 class Admin2APISerializer(serializers.HyperlinkedModelSerializer):
@@ -43,43 +41,51 @@ class Admin2APIMixin(Admin2Mixin):
 class IndexAPIView(Admin2APIMixin, APIView):
     apps = None
     registry = None
+    version = '0'
 
-    def get_model_data(self, model):
-        model_admin = self.registry[model]
-        model_options = utils.model_options(model)
-        opts = {
-            'current_app': model_admin.admin.name,
+    def get_admin_data(self, admin):
+        entrypoints = []
+        for version, views in admin.api.items():
+            url = reverse(
+                '{current_app}:{admin_name}_api_v{version}_list'.format(
+                    current_app=admin.admin.name,
+                    admin_name=admin.name,
+                    version=version,
+                ),
+                request=self.request)
+            entrypoints.append({
+                'version': version,
+                'url': url,
+            })
+        default_entrypoint = reverse(
+            '{current_app}:{admin_name}_api_list'.format(
+                current_app=admin.admin.name,
+                admin_name=admin.name,
+            ),
+            request=self.request)
+        model_options = utils.model_options(admin.model)
+        verbose_name = force_text(model_options.verbose_name)
+        verbose_name_plural = force_text(model_options.verbose_name_plural)
+        model_data = {
             'app_label': model_options.app_label,
-            'model_name': model_options.object_name.lower(),
+            'object_name': model_options.object_name,
+            'verbose_name': verbose_name,
+            'verbose_name_plural': verbose_name_plural,
         }
-        model_url = reverse(
-            '%(current_app)s:%(app_label)s_%(model_name)s_api_list' % opts,
-            request=self.request,
-            format=self.kwargs.get('format'))
-        model_options = utils.model_options(model)
         return {
-            'url': model_url,
-            'verbose_name': force_str(model_options.verbose_name),
-            'verbose_name_plural': force_str(model_options.verbose_name_plural),
-        }
-
-    def get_app_data(self, app_label, models):
-        model_data = []
-        for model in models:
-            model_data.append(self.get_model_data(model))
-        return {
-            'app_label': app_label,
-            'models': model_data,
+            'name': admin.name,
+            'model': model_data,
+            'url': default_entrypoint,
+            'versions': entrypoints,
         }
 
     def get(self, request):
-        app_data = []
-        for app_label, registry in self.apps.items():
-            models = registry.keys()
-            app_data.append(self.get_app_data(app_label, models))
+        admin_data = []
+        for admin in self.registry.values():
+            admin_data.append(self.get_admin_data(admin))
         index_data = {
-            'version': API_VERSION,
-            'apps': app_data,
+            'version': self.version,
+            'admins': admin_data,
         }
         return Response(index_data)
 

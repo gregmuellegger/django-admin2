@@ -143,7 +143,7 @@ class Admin2(object):
                 name='app_index'
             ),
             url(
-                regex=r'^api/v0/$',
+                regex=r'^api/v{}/$'.format(self.api_index_view.version),
                 view=self.api_index_view.as_view(**self.get_api_index_kwargs()),
                 name='api_index'
             ),
@@ -156,10 +156,6 @@ class Admin2(object):
                     model_options.app_label,
                     model_options.object_name.lower()),
                     include(model_admin.urls)),
-                url('^api/v0/{}/{}/'.format(
-                    model_options.app_label,
-                    model_options.object_name.lower()),
-                    include(model_admin.api_urls)),
             )
         return urlpatterns
 
